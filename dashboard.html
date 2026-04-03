@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html></html>
+<head>
+  <title>Dashboard</title>
+</head>
+
+<body onload="checkAuth(); loadCases();">
+
+<h2>Case Dashboard</h2>
+
+<input id="search" onkeyup="searchCases()" placeholder="Search">
+
+<div id="cases"></div>
+
+<h3>Create Case</h3>
+
+<input id="titleInput" placeholder="Title">
+<input id="descInput" placeholder="Description">
+
+<button onclick="addCase()">Create</button>
+
+<br><br>
+<button onclick="logout()">Logout</button>
+
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
