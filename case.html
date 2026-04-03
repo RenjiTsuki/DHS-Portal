@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Case</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body onload="checkAuth(); loadCase();">
+
+<div class="topbar">Case Details</div>
+
+<div class="main">
+  <div id="caseDetails"></div>
+
+  <button onclick="updateStatus('Investigating')">Investigating</button>
+  <button onclick="updateStatus('Closed')">Closed</button>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
