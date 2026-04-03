@@ -12,6 +12,14 @@ function saveUsers(users) {
   localStorage.setItem("users", JSON.stringify(users));
 }
 
+function getCases() {
+  return JSON.parse(localStorage.getItem("cases")) || [];
+}
+
+function saveCases(cases) {
+  localStorage.setItem("cases", JSON.stringify(cases));
+}
+
 /* LOGIN */
 function login() {
   const id = document.getElementById("agentIdInput").value;
@@ -48,8 +56,7 @@ function toggleMenu() {
   s.style.left = s.style.left === "0px" ? "-260px" : "0px";
 }
 
-/* ---------------- USERS ---------------- */
-
+/* USERS */
 function createUser() {
   const current = getUser();
 
@@ -58,32 +65,32 @@ function createUser() {
     return;
   }
 
-  const agentId = document.getElementById("newAgentId").value;
-  const password = document.getElementById("newPassword").value;
-  const role = document.getElementById("newRole").value;
+  const users = getUsers();
 
-  let users = getUsers();
-
-  users.push({ agentId, password, role });
+  users.push({
+    agentId: document.getElementById("newAgentId").value,
+    password: document.getElementById("newPassword").value,
+    role: document.getElementById("newRole").value
+  });
 
   saveUsers(users);
   loadUsers();
 }
 
 function loadUsers() {
-  const container = document.getElementById("userList");
-  if (!container) return;
+  const list = document.getElementById("userList");
+  if (!list) return;
 
   const users = getUsers();
 
-  container.innerHTML = "";
+  list.innerHTML = "";
 
   users.forEach((u, i) => {
-    container.innerHTML += `
+    list.innerHTML += `
       <div class="card">
         <b>${u.agentId}</b> (${u.role})
-        <br><br>
 
+        <br><br>
         <button onclick="editUser(${i})">Edit</button>
         <button onclick="deleteUser(${i})">Delete</button>
       </div>
@@ -100,8 +107,7 @@ function deleteUser(i) {
 
 function editUser(i) {
   let users = getUsers();
-
-  const newRole = prompt("Enter role (admin / agent):", users[i].role);
+  const newRole = prompt("Role (admin / agent):", users[i].role);
 
   if (newRole) {
     users[i].role = newRole;
@@ -110,21 +116,12 @@ function editUser(i) {
   }
 }
 
-/* ---------------- CASES ---------------- */
-
-function getCases() {
-  return JSON.parse(localStorage.getItem("cases")) || [];
-}
-
-function saveCases(cases) {
-  localStorage.setItem("cases", JSON.stringify(cases));
-}
-
+/* CASES */
 function createCase() {
   const current = getUser();
 
   if (!current || current.role !== "admin") {
-    alert("Only Inspector General can create cases");
+    alert("Only admin can create cases");
     return;
   }
 
@@ -142,17 +139,17 @@ function createCase() {
 }
 
 function loadCases(filter = "") {
-  const container = document.getElementById("caseList");
-  if (!container) return;
+  const list = document.getElementById("caseList");
+  if (!list) return;
 
   let cases = getCases();
 
-  container.innerHTML = "";
+  list.innerHTML = "";
 
   cases
     .filter(c => c.title.toLowerCase().includes(filter.toLowerCase()))
     .forEach((c, i) => {
-      container.innerHTML += `
+      list.innerHTML += `
         <div class="card">
           <b>${c.title}</b>
           <p>${c.desc}</p>
@@ -182,13 +179,12 @@ function deleteCase(i) {
   loadCases();
 }
 
-/* ---------------- DASHBOARD ---------------- */
-
+/* DASHBOARD */
 function loadStats() {
   const cases = getCases();
 
   stats.innerHTML = `
-    <div class="card">Total Cases: ${cases.length}</div>
+    <div class="card">Total: ${cases.length}</div>
     <div class="card">Open: ${cases.filter(c=>c.status==="OPEN").length}</div>
     <div class="card">Investigating: ${cases.filter(c=>c.status==="INVESTIGATING").length}</div>
     <div class="card">Closed: ${cases.filter(c=>c.status==="CLOSED").length}</div>
