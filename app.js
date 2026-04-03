@@ -1,3 +1,19 @@
+// DEFAULT USERS SETUP
+(function initDefaultUsers() {
+  let users = JSON.parse(localStorage.getItem("users"));
+
+  if (!users) {
+    users = [];
+
+    users.push({
+      username: "IG01",
+      password: "alphacharliezulu",
+      role: "admin"
+    });
+
+    localStorage.setItem("users", JSON.stringify(users));
+  }
+})();
 function createUser() {
   let users = JSON.parse(localStorage.getItem("users")) || [];
 
