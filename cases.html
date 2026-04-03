@@ -1,42 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Cases</title>
+  <title>Case Management</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body onload="checkLogin(); loadCases();">
+<body onload="checkAuth(); loadCases();">
 
-  <div class="topbar">
-    <span class="menu-btn" onclick="toggleMenu()">☰</span>
-    Case Management
-  </div>
+<div class="topbar">
+  Case Management System
+</div>
 
-  <div class="sidebar" id="sidebar">
-    <button onclick="window.location='dashboard.html'">Dashboard</button>
-    <button onclick="window.location='cases.html'">Cases</button>
-    <button onclick="window.location='users.html'">User Management</button>
-    <button onclick="logout()">Logout</button>
-  </div>
+<div class="sidebar">
+  <a href="dashboard.html">Dashboard</a>
+  <a href="cases.html">Cases</a>
+  <a href="admin.html">Admin</a>
+</div>
 
-  <div class="container">
+<div class="main">
 
-    <div class="card">
-      <h3>Create Case</h3>
+  <h2>Create Case</h2>
 
-      <input id="caseTitle" placeholder="Title">
-      <input id="caseDesc" placeholder="Description">
+  <input id="caseTitle" placeholder="Case Title">
+  <textarea id="caseDesc" placeholder="Description"></textarea>
+  <input id="caseLink" placeholder="Evidence / Link">
 
-      <button onclick="createCase()">Create Case</button>
-    </div>
+  <button onclick="createCase()">Create Case</button>
 
-    <input placeholder="Search..." onkeyup="loadCases(this.value)">
+  <h2>All Cases</h2>
+  <div id="caseList"></div>
 
-    <div id="caseList"></div>
+</div>
 
-  </div>
-
-  <script src="app.js"></script>
-
+<script src="app.js"></script>
 </body>
 </html>
