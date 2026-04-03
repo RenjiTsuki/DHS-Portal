@@ -5,26 +5,23 @@
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body onload="checkAuth('admin'); loadUsers();">
-
-<div class="topbar">Admin Panel</div>
+<body onload="checkAuth('admin'); loadUsers()">
 
 <div class="main">
 
-  <h2>Create User</h2>
+<h2>Create User</h2>
 
-  <input id="newUser" placeholder="Username">
-  <input id="newPass" placeholder="Password">
+<input id="newUser" placeholder="Username">
+<input id="newPass" placeholder="Password">
 
-  <select id="role">
-    <option value="agent">Agent</option>
-    <option value="admin">Admin</option>
-  </select>
+<select id="role">
+  <option value="agent">Agent</option>
+  <option value="admin">Admin</option>
+</select>
 
-  <button onclick="createUser()">Create</button>
+<button onclick="createUser()">Create</button>
 
-  <h2>Users</h2>
-  <div id="userList"></div>
+<div id="userList"></div>
 
 </div>
 
