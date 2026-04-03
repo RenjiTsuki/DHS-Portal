@@ -1,74 +1,50 @@
-// LOGIN FUNCTION
 function login() {
   const agentId = document.getElementById("agentIdInput").value;
   const password = document.getElementById("password").value;
-  const error = document.getElementById("error");
 
-  // Get users from users.js OR localStorage
-  let users = [];
-
-  // If users exist in localStorage, use them
-  if (localStorage.getItem("users")) {
-    users = JSON.parse(localStorage.getItem("users"));
-  } else if (typeof usersList !== "undefined") {
-    // fallback to users.js
-    users = usersList;
-  }
-
-  // Find matching user
-  const user = users.find(
+  const user = usersList.find(
     u => u.agentId === agentId && u.password === password
   );
 
   if (!user) {
-    error.innerText = "Invalid Agent ID or Password";
+    document.getElementById("error").innerText = "Invalid login";
     return;
   }
 
-  // Save session
-  localStorage.setItem("role", user.role);
-  localStorage.setItem("agentId", user.agentId);
+  localStorage.setItem("user", JSON.stringify(user));
 
-  // Redirect
   window.location = "dashboard.html";
 }
 
-
-// CHECK LOGIN (use this on other pages)
 function checkLogin() {
-  const role = localStorage.getItem("role");
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  if (!role) {
+  if (!user) {
     window.location = "index.html";
   }
 }
 
-
-// CREATE USER (ADMIN ONLY)
-function createUser() {
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-
-  const email = document.getElementById("newEmail").value;
-  const password = document.getElementById("newPassword").value;
-  const agentId = document.getElementById("newAgentId").value;
-
-  const role = "agent"; // default role
-
-  users.push({
-    email,
-    password,
-    agentId,
-    role
-  });
-
-  localStorage.setItem("users", JSON.stringify(users));
-
-  alert("User created!");
+function logout() {
+  localStorage.removeItem("user");
+  window.location = "index.html";
 }
 
+function createUser() {
+  const currentUser = JSON.parse(localStorage.getItem("user"));
 
-// LOGOUT
-function logout() {
-  localStorage.clear();
-  window.location = "index.html";
+  if (!currentUser || currentUser.role !== "admin") {
+    alert("Only admin can create users");
+    return;
+  }
+
+  const agentId = document.getElementById("newAgentId").value;
+  const password = document.getElementById("newPassword").value;
+
+  usersList.push({
+    agentId,
+    password,
+    role: "agent"
+  });
+
+  alert("User created (temporary)");
 }
