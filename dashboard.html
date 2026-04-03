@@ -7,37 +7,41 @@
 
 <body onload="checkLogin()">
 
+  <div class="header">
+    DHS | Office of the Inspector General Management System
+  </div>
+
   <div class="nav">
-    <h3>Dashboard</h3>
+    <span>Dashboard</span>
     <button onclick="logout()">Logout</button>
   </div>
 
   <div class="container">
-    <h2>Welcome</h2>
-    <p id="role"></p>
 
     <div class="card">
-      <h3>Cases</h3>
-      <p>Case management coming soon</p>
+      <h2>Welcome</h2>
+      <p id="role"></p>
     </div>
 
     <div id="adminPanel"></div>
+
+    <div class="card">
+      <button onclick="window.location='cases.html'">Go to Cases</button>
+    </div>
+
   </div>
 
   <script src="app.js"></script>
 
   <script>
-    const user = JSON.parse(localStorage.getItem("user"));
-
+    const user = getUser();
     document.getElementById("role").innerText = "Role: " + user.role;
 
     if (user.role === "admin") {
       document.getElementById("adminPanel").innerHTML = `
         <div class="card">
           <h3>Admin Panel</h3>
-          <input id="newAgentId" placeholder="New Agent ID">
-          <input id="newPassword" type="password" placeholder="Password">
-          <button onclick="createUser()">Create User</button>
+          <p>Create system controls here</p>
         </div>
       `;
     }
