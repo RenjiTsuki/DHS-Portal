@@ -12,14 +12,15 @@ function login() {
   }
 
   localStorage.setItem("user", JSON.stringify(user));
-
   window.location = "dashboard.html";
 }
 
-function checkLogin() {
-  const user = JSON.parse(localStorage.getItem("user"));
+function getUser() {
+  return JSON.parse(localStorage.getItem("user"));
+}
 
-  if (!user) {
+function checkLogin() {
+  if (!getUser()) {
     window.location = "index.html";
   }
 }
@@ -29,22 +30,55 @@ function logout() {
   window.location = "index.html";
 }
 
-function createUser() {
-  const currentUser = JSON.parse(localStorage.getItem("user"));
+/* ---------------- CASES ---------------- */
 
-  if (!currentUser || currentUser.role !== "admin") {
-    alert("Only admin can create users");
+function getCases() {
+  return JSON.parse(localStorage.getItem("cases")) || [];
+}
+
+function saveCases(cases) {
+  localStorage.setItem("cases", JSON.stringify(cases));
+}
+
+function createCase() {
+  const user = getUser();
+
+  if (user.role !== "admin") {
+    alert("Only admin can create cases");
     return;
   }
 
-  const agentId = document.getElementById("newAgentId").value;
-  const password = document.getElementById("newPassword").value;
+  const title = document.getElementById("caseTitle").value;
+  const desc = document.getElementById("caseDesc").value;
 
-  usersList.push({
-    agentId,
-    password,
-    role: "agent"
+  const cases = getCases();
+
+  cases.push({
+    id: Date.now(),
+    title,
+    desc,
+    status: "OPEN"
   });
 
-  alert("User created (temporary)");
+  saveCases(cases);
+  loadCases();
+}
+
+function loadCases(filter = "") {
+  const cases = getCases();
+  const container = document.getElementById("caseList");
+
+  container.innerHTML = "";
+
+  cases
+    .filter(c => c.title.toLowerCase().includes(filter.toLowerCase()))
+    .forEach(c => {
+      container.innerHTML += `
+        <div class="card">
+          <h3>${c.title}</h3>
+          <p>${c.desc}</p>
+          <p>Status: ${c.status}</p>
+        </div>
+      `;
+    });
 }
