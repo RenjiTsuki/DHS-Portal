@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login</title>
+  <title>Secure System Login</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="login-body">
 
-<div class="main">
-  <h2>Secure System Login</h2>
+  <div class="login-container">
+    <h1>Secure System</h1>
+    <h3>Login</h3>
 
-  <input id="agentIdInput" placeholder="Username">
-  <input id="password" type="password" placeholder="Password">
+    <input id="agentIdInput" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
 
-  <button onclick="login()">Login</button>
+    <button onclick="login()">Login</button>
 
-  <p id="error"></p>
-</div>
+    <p id="error"></p>
+  </div>
 
-<script src="app.js"></script>
+  <script src="app.js"></script>
 
 </body>
 </html>
