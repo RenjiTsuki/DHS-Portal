@@ -63,3 +63,38 @@ button {
 button:hover {
   background: #1d4ed8;
 }
+.login-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #0f172a;
+}
+
+.login-container {
+  background: #1e293b;
+  padding: 40px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.login-container h1 {
+  margin-bottom: 5px;
+}
+
+.login-container h3 {
+  margin-bottom: 20px;
+  font-weight: normal;
+  color: #94a3b8;
+}
+
+.login-container input {
+  width: 100%;
+  margin: 8px 0;
+}
+
+.login-container button {
+  width: 100%;
+}
