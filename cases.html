@@ -5,9 +5,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body onload="checkAuth(); loadCases();">
-
-<div class="topbar">Cases</div>
+<body onload="checkAuth(); loadCases()">
 
 <div class="sidebar">
   <a href="dashboard.html">Dashboard</a>
@@ -17,16 +15,14 @@
 
 <div class="main">
 
-  <h2>Create Case</h2>
+<h2>Create Case</h2>
 
-  <input id="caseTitle" placeholder="Title">
-  <textarea id="caseDesc" placeholder="Description"></textarea>
-  <input id="caseLink" placeholder="Evidence Link">
+<input id="caseTitle" placeholder="Title">
+<textarea id="caseDesc" placeholder="Description"></textarea>
 
-  <button onclick="createCase()">Create</button>
+<button onclick="createCase()">Create</button>
 
-  <h2>Cases</h2>
-  <div id="caseList"></div>
+<div id="caseList"></div>
 
 </div>
 
