@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body onload="checkAuth()">
@@ -10,49 +12,95 @@
   <a href="dashboard.html">📊 Dashboard</a>
   <a href="users.html">👤 Users</a>
   <a href="cases.html">📁 Cases</a>
-  <a onclick="logout()">🚪 Logout</a>
+  <a href="#" onclick="logout()">🚪 Logout</a>
 </div>
 
 <div class="main">
 
-<div class="topbar">Operations Dashboard</div>
+  <div class="topbar">Operations Dashboard</div>
 
-<div class="stat-grid">
+  <!-- STATS -->
+  <div class="stat-grid">
 
-  <div class="stat-card">
-    <h3>Total Users</h3>
-    <p id="userCount"></p>
+    <div class="stat-card">
+      <h3>Total Users</h3>
+      <p id="userCount">0</p>
+    </div>
+
+    <div class="stat-card">
+      <h3>Total Cases</h3>
+      <p id="caseCount">0</p>
+    </div>
+
+    <div class="stat-card">
+      <h3>Active Cases</h3>
+      <p id="activeCases">0</p>
+    </div>
+
   </div>
 
-  <div class="stat-card">
-    <h3>Total Cases</h3>
-    <p id="caseCount"></p>
+  <!-- ANNOUNCEMENTS -->
+  <div class="card">
+    <h3>📢 Announcements</h3>
+
+    <input id="announcementText" placeholder="Write an announcement...">
+    <button onclick="addAnnouncement()">Post</button>
+
+    <div id="announcements" style="margin-top:15px;"></div>
   </div>
 
-  <div class="stat-card">
-    <h3>Active Cases</h3>
-    <p id="activeCases"></p>
+  <!-- SYSTEM STATUS -->
+  <div class="card">
+    <h3>System Status</h3>
+    <p>🟢 All systems operational</p>
   </div>
 
 </div>
-
-<div class="card">
-  <h3>System Status</h3>
-  <p>All systems operational</p>
-</div>
-
-</div>
-
-<script>
-const users = JSON.parse(localStorage.getItem("users")) || [];
-const cases = JSON.parse(localStorage.getItem("cases")) || [];
-
-document.getElementById("userCount").innerText = users.length;
-document.getElementById("caseCount").innerText = cases.length;
-document.getElementById("activeCases").innerText =
-cases.filter(c => c.status !== "Closed").length;
-</script>
 
 <script src="app.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* =========================
+     STATS
+  ========================= */
+
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const cases = JSON.parse(localStorage.getItem("cases")) || [];
+
+  const userCount = document.getElementById("userCount");
+  const caseCount = document.getElementById("caseCount");
+  const activeCases = document.getElementById("activeCases");
+
+  if (userCount) userCount.innerText = users.length;
+  if (caseCount) caseCount.innerText = cases.length;
+
+  if (activeCases) {
+    activeCases.innerText =
+      cases.filter(c => c.status !== "Closed").length;
+  }
+
+  /* =========================
+     ANNOUNCEMENTS DISPLAY
+  ========================= */
+
+  const announcements = JSON.parse(localStorage.getItem("announcements")) || [];
+
+  const container = document.getElementById("announcements");
+
+  if (container) {
+    container.innerHTML = announcements.map(a => `
+      <div class="announcement">
+        <b>${a.date}</b><br>
+        ${a.text}
+      </div>
+      <hr>
+    `).join("");
+  }
+
+});
+</script>
+
 </body>
 </html>
