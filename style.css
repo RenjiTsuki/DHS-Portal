@@ -1,49 +1,55 @@
 body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #0f172a, #1e293b);
+  color: white;
   margin: 0;
-  background-color: #0a1929;
-  color: #e6edf3;
-  font-family: "Segoe UI", Arial;
 }
 
-.header {
-  background: #0f2a44;
-  padding: 12px;
-  border-bottom: 3px solid #1f6feb;
+.container {
+  width: 350px;
+  margin: 100px auto;
+  background: #111827;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
-.sidebar {
-  width: 220px;
-  height: 100vh;
-  background: #0d2238;
-  position: fixed;
-  padding: 15px;
+h2 {
+  text-align: center;
 }
 
-.sidebar a {
-  display: block;
-  padding: 8px;
-  color: #c9d1d9;
-  text-decoration: none;
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
 }
 
-.sidebar a:hover {
-  background: #1f6feb;
-}
-
-.main {
-  margin-left: 240px;
-  padding: 20px;
-}
-
-.card {
-  background: #0f2a44;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-left: 4px solid #1f6feb;
+button {
+  width: 100%;
+  padding: 10px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
 }
 
-input, button {
-  padding: 8px;
-  margin-top: 5px;
+button:hover {
+  background: #1d4ed8;
+}
+
+.nav {
+  background: #020617;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.card {
+  background: #1e293b;
+  padding: 15px;
+  margin: 10px;
+  border-radius: 8px;
 }
