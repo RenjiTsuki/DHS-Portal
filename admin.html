@@ -25,6 +25,20 @@
 
 </div>
 
+  <div class="card">
+  <h3>Create Role</h3>
+
+  <input id="roleName" placeholder="Role Name">
+
+  <label><input type="checkbox" class="perm" value="manage_users"> Manage Users</label>
+  <label><input type="checkbox" class="perm" value="manage_cases"> Manage Cases</label>
+  <label><input type="checkbox" class="perm" value="view_reports"> View Reports</label>
+
+  <button onclick="createRole()">Create Role</button>
+</div>
+
+<div id="roleList"></div>
+
 <script src="app.js"></script>
 </body>
 </html>
