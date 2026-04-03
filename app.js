@@ -20,6 +20,7 @@
 /* =========================
    AUTH SYSTEM
 ========================= */
+
 function login() {
   const u = document.getElementById("username").value;
   const p = document.getElementById("password").value;
@@ -57,8 +58,61 @@ function checkAuth(role = null) {
 }
 
 /* =========================
-   USER MANAGEMENT
+   ROLES SYSTEM
 ========================= */
+
+function createRole() {
+  let roles = JSON.parse(localStorage.getItem("roles")) || [];
+
+  const name = document.getElementById("roleName").value;
+
+  // get selected permissions
+  const permissions = Array.from(
+    document.querySelectorAll(".perm:checked")
+  ).map(p => p.value);
+
+  if (!name) {
+    alert("Role name required");
+    return;
+  }
+
+  roles.push({ name, permissions });
+
+  localStorage.setItem("roles", JSON.stringify(roles));
+
+  loadRoles();
+}
+
+function loadRoles() {
+  let roles = JSON.parse(localStorage.getItem("roles")) || [];
+  const list = document.getElementById("roleList");
+
+  if (!list) return;
+
+  list.innerHTML = "";
+
+  roles.forEach((r, i) => {
+    list.innerHTML += `
+      <div class="card">
+        <b>${r.name}</b>
+        <p>${r.permissions.join(", ")}</p>
+        <button onclick="deleteRole(${i})">Delete</button>
+      </div>
+    `;
+  });
+}
+
+function deleteRole(i) {
+  let roles = JSON.parse(localStorage.getItem("roles")) || [];
+  roles.splice(i, 1);
+  localStorage.setItem("roles", JSON.stringify(roles));
+  loadRoles();
+}
+
+/* =========================
+   USERS SYSTEM
+========================= */
+
 function createUser() {
   let users = JSON.parse(localStorage.getItem("users")) || [];
 
@@ -71,20 +125,16 @@ function createUser() {
     return;
   }
 
-  if (users.some(u => u.username === username)) {
-    alert("User already exists");
-    return;
-  }
-
   users.push({
     username,
     password,
     role,
-    notes: "",
-    warnings: 0
+    warnings: [],
+    notes: ""
   });
 
   localStorage.setItem("users", JSON.stringify(users));
+
   loadUsers();
 }
 
@@ -92,157 +142,121 @@ function loadUsers() {
   const list = document.getElementById("userList");
   if (!list) return;
 
-  const users = JSON.parse(localStorage.getItem("users")) || [];
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
   list.innerHTML = "";
 
   users.forEach((u, i) => {
     list.innerHTML += `
-      <tr>
-        <td>${u.username}</td>
-        <td><span class="badge ${u.role}">${u.role}</span></td>
-        <td>${u.warnings}</td>
-        <td>
-          <button onclick="viewProfile(${i})">Profile</button>
-          <button onclick="deleteUser(${i})">Delete</button>
-        </td>
-      </tr>
-    `;
-  });
-}
+      <div class="card">
+        <b>${u.username}</b> (${u.role})
 
-function deleteUser(i) {
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-  users.splice(i, 1);
-  localStorage.setItem("users", JSON.stringify(users));
-  loadUsers();
-}
+        <br><br>
 
-/* =========================
-   PROFILE SYSTEM
-========================= */
-function viewProfile(i) {
-  localStorage.setItem("profileIndex", i);
-  window.location = "profile.html";
-}
+        <input id="editUser${i}" value="${u.username}">
+        <input id="editPass${i}" value="${u.password}">
 
-function loadProfile() {
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-  const i = localStorage.getItem("profileIndex");
-  const u = users[i];
-
-  document.getElementById("profile").innerHTML = `
-    <h2>${u.username}</h2>
-    <p>Role: ${u.role}</p>
-    <p class="warning">Warnings: ${u.warnings}</p>
-
-    <textarea id="notes">${u.notes}</textarea>
-
-    <button onclick="saveNotes(${i})">Save Notes</button>
-    <button onclick="addWarning(${i})">Add Warning</button>
-  `;
-}
-
-function saveNotes(i) {
-  let users = JSON.parse(localStorage.getItem("users"));
-  users[i].notes = document.getElementById("notes").value;
-  localStorage.setItem("users", JSON.stringify(users));
-}
-
-function addWarning(i) {
-  let users = JSON.parse(localStorage.getItem("users"));
-  users[i].warnings++;
-  localStorage.setItem("users", JSON.stringify(users));
-  loadProfile();
-}
-
-/* =========================
-   CASE SYSTEM
-========================= */
-function createCase() {
-  let cases = JSON.parse(localStorage.getItem("cases")) || [];
-
-  cases.push({
-    id: Date.now(),
-    title: document.getElementById("caseTitle").value,
-    desc: document.getElementById("caseDesc").value,
-    assigned: "Unassigned",
-    status: "Open",
-    notes: ""
-  });
-
-  localStorage.setItem("cases", JSON.stringify(cases));
-  loadCases();
-}
-
-function loadCases() {
-  const list = document.getElementById("caseList");
-  if (!list) return;
-
-  let cases = JSON.parse(localStorage.getItem("cases")) || [];
-
-  list.innerHTML = "";
-
-  cases.forEach(c => {
-    list.innerHTML += `
-      <div class="case-card">
-        <h3>${c.title}</h3>
-        <p>${c.desc}</p>
-        <p><b>Status:</b> ${c.status}</p>
-        <p><b>Assigned:</b> ${c.assigned}</p>
-
-        <input placeholder="Assign agent..." onchange="assign(${c.id}, this.value)">
-
-        <select onchange="changeStatus(${c.id}, this.value)">
-          <option ${c.status === "Open" ? "selected" : ""}>Open</option>
-          <option ${c.status === "Investigating" ? "selected" : ""}>Investigating</option>
-          <option ${c.status === "Closed" ? "selected" : ""}>Closed</option>
+        <select id="editRole${i}">
+          ${getRoleOptions(u.role)}
         </select>
 
-        <button onclick="openCase(${c.id})">Open</button>
+        <button onclick="updateUser(${i})">Update</button>
+        <button onclick="deleteUser(${i})">Delete</button>
       </div>
     `;
   });
 }
 
-function assign(id, agent) {
-  let cases = JSON.parse(localStorage.getItem("cases"));
-  let c = cases.find(x => x.id === id);
-  c.assigned = agent;
-  localStorage.setItem("cases", JSON.stringify(cases));
+function getRoleOptions(current) {
+  let roles = JSON.parse(localStorage.getItem("roles")) || [];
+
+  let options = "";
+
+  roles.forEach(r => {
+    options += `<option value="${r.name}" ${r.name === current ? "selected" : ""}>${r.name}</option>`;
+  });
+
+  return options;
 }
 
-function changeStatus(id, status) {
-  let cases = JSON.parse(localStorage.getItem("cases"));
-  let c = cases.find(x => x.id === id);
-  c.status = status;
-  localStorage.setItem("cases", JSON.stringify(cases));
+function updateUser(i) {
+  let users = JSON.parse(localStorage.getItem("users"));
+
+  users[i].username = document.getElementById(`editUser${i}`).value;
+  users[i].password = document.getElementById(`editPass${i}`).value;
+  users[i].role = document.getElementById(`editRole${i}`).value;
+
+  localStorage.setItem("users", JSON.stringify(users));
+  loadUsers();
 }
 
-function openCase(id) {
-  localStorage.setItem("caseId", id);
-  window.location = "case.html";
+function deleteUser(i) {
+  let users = JSON.parse(localStorage.getItem("users"));
+
+  users.splice(i, 1);
+
+  localStorage.setItem("users", JSON.stringify(users));
+  loadUsers();
 }
 
-function loadCase() {
+/* =========================
+   CASES SYSTEM
+========================= */
+
+function assignUserToCase(caseId, username) {
   let cases = JSON.parse(localStorage.getItem("cases")) || [];
-  const id = localStorage.getItem("caseId");
 
-  const c = cases.find(x => x.id == id);
+  let c = cases.find(x => x.id == caseId);
 
-  document.getElementById("case").innerHTML = `
-    <h2>${c.title}</h2>
-    <p>${c.desc}</p>
+  if (!c.assignedUsers) c.assignedUsers = [];
 
-    <textarea id="caseNotes">${c.notes}</textarea>
-    <button onclick="saveCaseNotes(${id})">Save Notes</button>
-  `;
-}
-
-function saveCaseNotes(id) {
-  let cases = JSON.parse(localStorage.getItem("cases"));
-  let c = cases.find(x => x.id == id);
-
-  c.notes = document.getElementById("caseNotes").value;
+  if (!c.assignedUsers.includes(username)) {
+    c.assignedUsers.push(username);
+  }
 
   localStorage.setItem("cases", JSON.stringify(cases));
+}
+
+function removeUserFromCase(caseId, username) {
+  let cases = JSON.parse(localStorage.getItem("cases")) || [];
+
+  let c = cases.find(x => x.id == caseId);
+
+  c.assignedUsers = c.assignedUsers.filter(u => u !== username);
+
+  localStorage.setItem("cases", JSON.stringify(cases));
+}
+
+/* =========================
+   WARNINGS
+========================= */
+
+function addWarning(i) {
+  let users = JSON.parse(localStorage.getItem("users"));
+
+  const text = prompt("Enter warning:");
+
+  users[i].warnings.push({
+    text,
+    date: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("users", JSON.stringify(users));
+}
+
+/* =========================
+   ANNOUNCEMENTS
+========================= */
+
+function addAnnouncement() {
+  let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
+
+  const text = document.getElementById("announcementText").value;
+
+  announcements.unshift({
+    text,
+    date: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("announcements", JSON.stringify(announcements));
 }
