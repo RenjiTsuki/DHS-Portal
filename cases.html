@@ -7,19 +7,24 @@
 <body onload="checkAuth(); loadCases()">
 
 <div class="sidebar">
-<a href="dashboard.html">Dashboard</a>
-<a href="users.html">Users</a>
-<a href="cases.html">Cases</a>
+<a href="dashboard.html">📊 Dashboard</a>
+<a href="users.html">👤 Users</a>
+<a href="cases.html">📁 Cases</a>
+<a onclick="logout()">🚪 Logout</a>
 </div>
 
 <div class="main">
 
-<h2>Create Case</h2>
+<div class="topbar">Case Management</div>
 
-<input id="caseTitle" placeholder="Title">
-<input id="caseDesc" placeholder="Description">
+<div class="card">
+<h3>Create Case</h3>
 
-<button onclick="createCase()">Create</button>
+<input id="caseTitle" placeholder="Case Title">
+<textarea id="caseDesc" placeholder="Description"></textarea>
+
+<button onclick="createCase()">Create Case</button>
+</div>
 
 <div id="caseList"></div>
 
