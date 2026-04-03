@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Case Management</title>
+  <title>Cases</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body onload="checkAuth(); loadCases();">
 
-<div class="topbar">
-  Case Management System
-</div>
+<div class="topbar">Cases</div>
 
 <div class="sidebar">
   <a href="dashboard.html">Dashboard</a>
@@ -21,13 +19,13 @@
 
   <h2>Create Case</h2>
 
-  <input id="caseTitle" placeholder="Case Title">
+  <input id="caseTitle" placeholder="Title">
   <textarea id="caseDesc" placeholder="Description"></textarea>
-  <input id="caseLink" placeholder="Evidence / Link">
+  <input id="caseLink" placeholder="Evidence Link">
 
-  <button onclick="createCase()">Create Case</button>
+  <button onclick="createCase()">Create</button>
 
-  <h2>All Cases</h2>
+  <h2>Cases</h2>
   <div id="caseList"></div>
 
 </div>
