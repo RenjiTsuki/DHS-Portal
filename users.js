@@ -1,12 +1,7 @@
-const users = [
+const usersList = [
   {
-    agentId: "OIG-1001",
-    password: "1234",
+    agentId: "admin",
+    password: "admin123",
     role: "admin"
-  },
-  {
-    agentId: "OIG-1002",
-    password: "pass",
-    role: "agent"
   }
 ];
