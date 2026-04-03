@@ -1,10 +1,13 @@
-// DEFAULT USERS SETUP
+/* =========================
+   DEFAULT USER SETUP
+========================= */
+
 (function initDefaultUsers() {
-  let users = JSON.parse(localStorage.getItem("users"));
+  let users = JSON.parse(localStorage.getItem("users")) || [];
 
-  if (!users) {
-    users = [];
+  const exists = users.some(u => u.username === "IG01");
 
+  if (!exists) {
     users.push({
       username: "IG01",
       password: "alphacharliezulu",
@@ -14,6 +17,11 @@
     localStorage.setItem("users", JSON.stringify(users));
   }
 })();
+
+/* =========================
+   CREATE USER
+========================= */
+
 function createUser() {
   let users = JSON.parse(localStorage.getItem("users")) || [];
 
@@ -23,6 +31,12 @@ function createUser() {
 
   if (!username || !password) {
     alert("Fill all fields");
+    return;
+  }
+
+  // Prevent duplicate usernames
+  if (users.some(u => u.username === username)) {
+    alert("User already exists");
     return;
   }
 
@@ -37,45 +51,53 @@ function createUser() {
   loadUsers();
 }
 
-/* LOAD + SEARCH USERS */
+/* =========================
+   LOAD + SEARCH USERS
+========================= */
 
 function loadUsers() {
   const list = document.getElementById("userList");
   if (!list) return;
 
-  let users = JSON.parse(localStorage.getItem("users")) || [];
+  const allUsers = JSON.parse(localStorage.getItem("users")) || [];
 
   const search = document.getElementById("searchUser")?.value?.toLowerCase() || "";
 
-  users = users.filter(u =>
+  const filteredUsers = allUsers.filter(u =>
     u.username.toLowerCase().includes(search)
   );
 
   list.innerHTML = "";
 
-  users.forEach((u, index) => {
+  filteredUsers.forEach(u => {
+
+    // Get REAL index from full array
+    const realIndex = allUsers.findIndex(x => x.username === u.username);
+
     list.innerHTML += `
       <div class="card">
         <b>${u.username}</b> (${u.role})
 
         <br><br>
 
-        <input value="${u.username}" id="editUser${index}" />
-        <input value="${u.password}" id="editPass${index}" />
+        <input value="${u.username}" id="editUser${realIndex}" />
+        <input value="${u.password}" id="editPass${realIndex}" />
 
-        <select id="editRole${index}">
+        <select id="editRole${realIndex}">
           <option value="agent" ${u.role === "agent" ? "selected" : ""}>Agent</option>
           <option value="admin" ${u.role === "admin" ? "selected" : ""}>Admin</option>
         </select>
 
-        <button onclick="updateUser(${index})">Update</button>
-        <button onclick="deleteUser(${index})">Delete</button>
+        <button onclick="updateUser(${realIndex})">Update</button>
+        <button onclick="deleteUser(${realIndex})">Delete</button>
       </div>
     `;
   });
 }
 
-/* UPDATE USER */
+/* =========================
+   UPDATE USER
+========================= */
 
 function updateUser(index) {
   let users = JSON.parse(localStorage.getItem("users")) || [];
@@ -84,6 +106,12 @@ function updateUser(index) {
   const password = document.getElementById(`editPass${index}`).value;
   const role = document.getElementById(`editRole${index}`).value;
 
+  // Prevent duplicate usernames on update
+  if (users.some((u, i) => u.username === username && i !== index)) {
+    alert("Username already in use");
+    return;
+  }
+
   users[index] = { username, password, role };
 
   localStorage.setItem("users", JSON.stringify(users));
@@ -91,10 +119,14 @@ function updateUser(index) {
   loadUsers();
 }
 
-/* DELETE USER */
+/* =========================
+   DELETE USER
+========================= */
 
 function deleteUser(index) {
   let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  if (!confirm("Are you sure you want to delete this user?")) return;
 
   users.splice(index, 1);
 
