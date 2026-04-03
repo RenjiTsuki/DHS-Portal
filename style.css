@@ -5,15 +5,76 @@ body {
   color: #e5e7eb;
 }
 
+/* TOP BAR */
+.topbar {
+  height: 60px;
+  background: #020617;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  font-weight: 600;
+  border-bottom: 1px solid #1f2937;
+}
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed;
+  top: 60px;
+  left: -260px;
+  width: 260px;
+  height: 100%;
+  background: #020617;
+  padding-top: 10px;
+  transition: 0.3s;
+  border-right: 1px solid #1f2937;
+}
+
+.sidebar button {
+  width: 100%;
+  padding: 14px 18px;
+  text-align: left;
+  background: none;
+  border: none;
+  color: #e5e7eb;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.sidebar button:hover {
+  background: #111827;
+}
+
+/* MENU ICON */
+.menu-btn {
+  font-size: 22px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+/* MAIN CONTENT */
+.container {
+  margin-left: 20px;
+  padding: 20px;
+}
+
+/* CARDS */
+.card {
+  background: #111827;
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #1f2937;
+}
+
 /* LOGIN */
 .login-container {
   width: 360px;
   margin: 120px auto;
   background: #111827;
   padding: 35px;
-  border-radius: 10px;
+  border-radius: 12px;
   text-align: center;
-  box-shadow: 0 0 25px rgba(0,0,0,0.6);
+  border: 1px solid #1f2937;
 }
 
 /* INPUTS */
@@ -30,67 +91,12 @@ button {
   padding: 10px;
   margin-top: 10px;
   background: #2563eb;
-  color: white;
   border: none;
+  color: white;
   border-radius: 6px;
   cursor: pointer;
 }
 
 button:hover {
   background: #1d4ed8;
-}
-
-/* TOP BAR */
-.topbar {
-  background: #020617;
-  padding: 14px 20px;
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-}
-
-/* SIDEBAR */
-.sidebar {
-  position: fixed;
-  left: -260px;
-  top: 0;
-  width: 260px;
-  height: 100%;
-  background: #020617;
-  padding-top: 20px;
-  transition: 0.3s;
-}
-
-.sidebar button {
-  width: 100%;
-  text-align: left;
-  padding: 12px;
-  background: none;
-  border: none;
-  color: #e5e7eb;
-  cursor: pointer;
-}
-
-.sidebar button:hover {
-  background: #1f2937;
-}
-
-/* MENU BUTTON */
-.menu-btn {
-  font-size: 24px;
-  margin-right: 15px;
-  cursor: pointer;
-}
-
-/* MAIN CONTENT */
-.container {
-  padding: 20px;
-}
-
-/* CARDS */
-.card {
-  background: #111827;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 8px;
 }
