@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cases</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body onload="checkLogin(); loadCases();">
+
+  <div class="header">
+    DHS | Office of the Inspector General Management System
+  </div>
+
+  <div class="nav">
+    <span>Cases</span>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <div class="container">
+
+    <input type="text" placeholder="Search cases..." onkeyup="loadCases(this.value)">
+
+    <div class="card">
+      <h3>Create Case</h3>
+      <input id="caseTitle" placeholder="Title">
+      <input id="caseDesc" placeholder="Description">
+      <button onclick="createCase()">Create Case</button>
+    </div>
+
+    <div id="caseList"></div>
+
+  </div>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
