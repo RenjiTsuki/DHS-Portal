@@ -7,35 +7,50 @@
 <body onload="checkAuth()">
 
 <div class="sidebar">
-<a href="dashboard.html">Dashboard</a>
-<a href="users.html">Users</a>
-<a href="cases.html">Cases</a>
-<a onclick="logout()">Logout</a>
+  <a href="dashboard.html">📊 Dashboard</a>
+  <a href="users.html">👤 Users</a>
+  <a href="cases.html">📁 Cases</a>
+  <a onclick="logout()">🚪 Logout</a>
 </div>
 
 <div class="main">
 
-<div class="topbar">Enterprise Operations Dashboard</div>
+<div class="topbar">Operations Dashboard</div>
 
-<div class="card">
-<h3>System Stats</h3>
-<p>Total Users: <span id="userCount"></span></p>
-<p>Total Cases: <span id="caseCount"></span></p>
+<div class="stat-grid">
+
+  <div class="stat-card">
+    <h3>Total Users</h3>
+    <p id="userCount"></p>
+  </div>
+
+  <div class="stat-card">
+    <h3>Total Cases</h3>
+    <p id="caseCount"></p>
+  </div>
+
+  <div class="stat-card">
+    <h3>Active Cases</h3>
+    <p id="activeCases"></p>
+  </div>
+
 </div>
 
 <div class="card">
-<h3>Activity Overview</h3>
-<p>System running normally</p>
+  <h3>System Status</h3>
+  <p>All systems operational</p>
 </div>
 
 </div>
 
 <script>
-document.getElementById("userCount").innerText =
-(JSON.parse(localStorage.getItem("users")) || []).length;
+const users = JSON.parse(localStorage.getItem("users")) || [];
+const cases = JSON.parse(localStorage.getItem("cases")) || [];
 
-document.getElementById("caseCount").innerText =
-(JSON.parse(localStorage.getItem("cases")) || []).length;
+document.getElementById("userCount").innerText = users.length;
+document.getElementById("caseCount").innerText = cases.length;
+document.getElementById("activeCases").innerText =
+cases.filter(c => c.status !== "Closed").length;
 </script>
 
 <script src="app.js"></script>
