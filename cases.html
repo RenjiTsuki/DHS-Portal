@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Cases</title>
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body onload="checkAuth(); loadCases()">
 
 <div class="sidebar">
-  <a href="dashboard.html">Dashboard</a>
-  <a href="cases.html">Cases</a>
-  <a href="admin.html">Admin</a>
+<a href="dashboard.html">Dashboard</a>
+<a href="users.html">Users</a>
+<a href="cases.html">Cases</a>
 </div>
 
 <div class="main">
@@ -18,7 +17,7 @@
 <h2>Create Case</h2>
 
 <input id="caseTitle" placeholder="Title">
-<textarea id="caseDesc" placeholder="Description"></textarea>
+<input id="caseDesc" placeholder="Description">
 
 <button onclick="createCase()">Create</button>
 
