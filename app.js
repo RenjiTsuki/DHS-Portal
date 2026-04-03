@@ -1,60 +1,3 @@
-let currentUser = null;
-
-/* =========================
-   AUTH
-========================= */
-
-function login() {
-  const id = document.getElementById("agentIdInput").value;
-  const password = document.getElementById("password").value;
-
-  let users = JSON.parse(localStorage.getItem("users"));
-
-  // Create default users if none exist
-  if (!users || users.length === 0) {
-    users = [
-      { username: "admin", password: "admin123", role: "admin" },
-      { username: "agent1", password: "agent123", role: "agent" }
-    ];
-    localStorage.setItem("users", JSON.stringify(users));
-  }
-
-  const user = users.find(u => u.username === id && u.password === password);
-
-  if (!user) {
-    document.getElementById("error").innerText = "Invalid login";
-    return;
-  }
-
-  localStorage.setItem("user", JSON.stringify(user));
-  window.location = "dashboard.html";
-}
-
-function logout() {
-  localStorage.removeItem("user");
-  window.location = "index.html";
-}
-
-function checkAuth(requiredRole = null) {
-  const user = JSON.parse(localStorage.getItem("user"));
-
-  if (!user) {
-    window.location = "index.html";
-    return;
-  }
-
-  if (requiredRole && user.role !== requiredRole) {
-    alert("Access denied");
-    window.location = "dashboard.html";
-  }
-
-  currentUser = user;
-}
-
-/* =========================
-   USERS (ADMIN)
-========================= */
-
 function createUser() {
   let users = JSON.parse(localStorage.getItem("users")) || [];
 
@@ -62,18 +5,35 @@ function createUser() {
   const password = document.getElementById("newPass").value;
   const role = document.getElementById("role").value;
 
-  users.push({ username, password, role });
+  if (!username || !password) {
+    alert("Fill all fields");
+    return;
+  }
+
+  users.push({
+    username,
+    password,
+    role
+  });
 
   localStorage.setItem("users", JSON.stringify(users));
 
   loadUsers();
 }
 
+/* LOAD + SEARCH USERS */
+
 function loadUsers() {
   const list = document.getElementById("userList");
   if (!list) return;
 
-  const users = JSON.parse(localStorage.getItem("users")) || [];
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  const search = document.getElementById("searchUser")?.value?.toLowerCase() || "";
+
+  users = users.filter(u =>
+    u.username.toLowerCase().includes(search)
+  );
 
   list.innerHTML = "";
 
@@ -82,11 +42,40 @@ function loadUsers() {
       <div class="card">
         <b>${u.username}</b> (${u.role})
 
+        <br><br>
+
+        <input value="${u.username}" id="editUser${index}" />
+        <input value="${u.password}" id="editPass${index}" />
+
+        <select id="editRole${index}">
+          <option value="agent" ${u.role === "agent" ? "selected" : ""}>Agent</option>
+          <option value="admin" ${u.role === "admin" ? "selected" : ""}>Admin</option>
+        </select>
+
+        <button onclick="updateUser(${index})">Update</button>
         <button onclick="deleteUser(${index})">Delete</button>
       </div>
     `;
   });
 }
+
+/* UPDATE USER */
+
+function updateUser(index) {
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  const username = document.getElementById(`editUser${index}`).value;
+  const password = document.getElementById(`editPass${index}`).value;
+  const role = document.getElementById(`editRole${index}`).value;
+
+  users[index] = { username, password, role };
+
+  localStorage.setItem("users", JSON.stringify(users));
+
+  loadUsers();
+}
+
+/* DELETE USER */
 
 function deleteUser(index) {
   let users = JSON.parse(localStorage.getItem("users")) || [];
@@ -96,115 +85,4 @@ function deleteUser(index) {
   localStorage.setItem("users", JSON.stringify(users));
 
   loadUsers();
-}
-
-/* =========================
-   CASES
-========================= */
-
-let cases = JSON.parse(localStorage.getItem("cases")) || [];
-
-function createCase() {
-  const title = document.getElementById("caseTitle").value;
-  const desc = document.getElementById("caseDesc").value;
-  const link = document.getElementById("caseLink").value;
-
-  cases.push({
-    id: Date.now(),
-    title,
-    desc,
-    link,
-    assignedTo: "Unassigned",
-    status: "Open"
-  });
-
-  localStorage.setItem("cases", JSON.stringify(cases));
-
-  loadCases();
-}
-
-function loadCases() {
-  const container = document.getElementById("caseList");
-  if (!container) return;
-
-  cases = JSON.parse(localStorage.getItem("cases")) || [];
-
-  container.innerHTML = "";
-
-  cases.forEach(c => {
-    container.innerHTML += `
-      <div class="card">
-        <h3>${c.title}</h3>
-        <p>${c.desc}</p>
-        <p><b>Status:</b> ${c.status}</p>
-        <p><b>Assigned:</b> ${c.assignedTo}</p>
-
-        ${c.link ? `<a href="${c.link}" target="_blank">Evidence Link</a>` : ""}
-
-        <select onchange="assignAgent(${c.id}, this.value)">
-          <option>Assign Agent</option>
-          <option value="agent1">agent1</option>
-          <option value="agent2">agent2</option>
-        </select>
-
-        <button onclick="openCase(${c.id})">Open</button>
-      </div>
-    `;
-  });
-}
-
-function assignAgent(id, agent) {
-  const c = cases.find(c => c.id === id);
-
-  if (c) {
-    c.assignedTo = agent;
-
-    localStorage.setItem("cases", JSON.stringify(cases));
-
-    loadCases();
-  }
-}
-
-function openCase(id) {
-  localStorage.setItem("currentCase", id);
-  window.location = "case.html";
-}
-
-/* =========================
-   CASE DETAIL PAGE
-========================= */
-
-function loadCase() {
-  const id = localStorage.getItem("currentCase");
-
-  cases = JSON.parse(localStorage.getItem("cases")) || [];
-
-  const c = cases.find(c => c.id == id);
-
-  if (!c) return;
-
-  document.getElementById("caseDetails").innerHTML = `
-    <div class="card">
-      <h2>${c.title}</h2>
-      <p>${c.desc}</p>
-      <p><b>Status:</b> ${c.status}</p>
-      <p><b>Assigned:</b> ${c.assignedTo}</p>
-
-      ${c.link ? `<a href="${c.link}" target="_blank">Evidence</a>` : ""}
-    </div>
-  `;
-}
-
-function updateStatus(status) {
-  const id = localStorage.getItem("currentCase");
-
-  const c = cases.find(c => c.id == id);
-
-  if (c) {
-    c.status = status;
-
-    localStorage.setItem("cases", JSON.stringify(cases));
-
-    loadCase();
-  }
 }
