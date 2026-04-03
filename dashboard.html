@@ -1,30 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Inspector General Dashboard</title>
+  <title>Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body onload="checkLogin(); loadStats();">
+<body onload="checkAuth()">
 
-  <div class="topbar">
-    <span class="menu-btn" onclick="toggleMenu()">☰</span>
-    DHS | Office of the Inspector General Management System
-  </div>
+<div class="topbar">Management System</div>
 
-  <div class="sidebar" id="sidebar">
-    <button onclick="window.location='dashboard.html'">Dashboard</button>
-    <button onclick="window.location='cases.html'">Cases</button>
-    <button onclick="window.location='users.html'">User Management</button>
-    <button onclick="logout()">Logout</button>
-  </div>
+<div class="sidebar">
+  <a href="dashboard.html">Dashboard</a>
+  <a href="cases.html">Cases</a>
+  <a href="admin.html">Admin</a>
+  <a onclick="logout()">Logout</a>
+</div>
 
-  <div class="container">
-    <h2>Dashboard</h2>
-    <div id="stats"></div>
-  </div>
+<div class="main">
+  <h2>Dashboard</h2>
+  <div class="card">System Active</div>
+</div>
 
-  <script src="app.js"></script>
-
+<script src="app.js"></script>
 </body>
 </html>
