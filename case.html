@@ -1,24 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <title>Case</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body onload="checkAuth(); loadCase()">
 
 <div class="sidebar">
-  <a href="dashboard.html">📊 Dashboard</a>
-  <a href="users.html">👤 Users</a>
-  <a href="cases.html">📁 Cases</a>
-  <a href="#" onclick="logout()">🚪 Logout</a>
+  <h2>DHS | OIG</h2>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="users.html">Users</a>
+  <a href="cases.html">Cases</a>
+  <a href="#" onclick="logout()">Logout</a>
 </div>
 
 <div class="main">
-
-<div class="topbar">Case Details</div>
-
-<div class="card" id="case"></div>
-
+  <div id="case"></div>
 </div>
 
 <script src="app.js"></script>
