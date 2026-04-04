@@ -5,23 +5,19 @@
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="login-container">
+<body class="login-body">
 
-  <div class="login-box">
-    <h1>Secure System</h1>
-    <p>Login</p>
+<div class="login-container">
+  <h2>Secure System Login</h2>
 
-    <!-- IMPORTANT: IDs MUST MATCH app.js -->
-    <input id="username" placeholder="Username">
-    <input id="password" type="password" placeholder="Password">
+  <input id="username" placeholder="Username">
+  <input id="password" type="password" placeholder="Password">
 
-    <button onclick="login()">Login</button>
+  <button onclick="login()">Login</button>
 
-    <p id="error"></p>
-  </div>
+  <p id="error" class="error"></p>
+</div>
 
-  <!-- MUST BE AT BOTTOM -->
-  <script src="app.js"></script>
-
+<script src="app.js"></script>
 </body>
 </html>
