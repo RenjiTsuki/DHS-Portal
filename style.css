@@ -1,221 +1,87 @@
-/* =========================
-   GLOBAL
-========================= */
 body {
   margin: 0;
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: #f1f5f9;
-  color: #0f172a;
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
 }
 
-/* =========================
-   LOGIN PAGE
-========================= */
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.sidebar {
+  width: 220px;
   height: 100vh;
-  background: linear-gradient(135deg, #1e293b, #0f172a);
+  background: #020617;
+  position: fixed;
+  padding: 20px;
 }
 
-.login-box {
-  background: white;
-  padding: 40px;
-  border-radius: 12px;
-  width: 340px;
-  box-shadow: 0 15px 50px rgba(0,0,0,0.25);
-  text-align: center;
-}
-
-.login-box h1 {
-  margin-bottom: 5px;
-}
-
-.login-box p {
-  color: #64748b;
+.sidebar h2 {
   margin-bottom: 20px;
 }
 
-/* =========================
-   INPUTS
-========================= */
+.sidebar a {
+  display: block;
+  padding: 10px;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+}
+
+.sidebar a:hover {
+  background: #1e293b;
+}
+
+.main {
+  margin-left: 240px;
+  padding: 20px;
+}
+
+.card {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.grid {
+  display: flex;
+  gap: 20px;
+}
+
 input, textarea, select {
   width: 100%;
   padding: 10px;
-  margin: 8px 0;
+  margin-top: 10px;
   border-radius: 6px;
-  border: 1px solid #cbd5e1;
-  font-size: 14px;
+  border: none;
 }
 
-textarea {
-  min-height: 100px;
-}
-
-/* =========================
-   BUTTONS
-========================= */
 button {
+  margin-top: 10px;
   padding: 10px;
   background: #2563eb;
-  color: white;
   border: none;
+  color: white;
   border-radius: 6px;
   cursor: pointer;
-  margin-top: 5px;
 }
 
 button:hover {
   background: #1d4ed8;
 }
 
-/* =========================
-   TOPBAR
-========================= */
-.topbar {
-  background: white;
-  padding: 15px 20px;
-  border-bottom: 1px solid #e2e8f0;
-  font-weight: 600;
-  font-size: 16px;
-}
-
-/* =========================
-   SIDEBAR
-========================= */
-.sidebar {
-  width: 220px;
-  height: 100vh;
-  position: fixed;
-  background: #0f172a;
-  padding-top: 20px;
-}
-
-.sidebar a {
-  display: block;
-  padding: 12px 20px;
-  color: #cbd5f5;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.sidebar a:hover {
-  background: #1e293b;
-  color: white;
-}
-
-/* =========================
-   MAIN CONTENT
-========================= */
-.main {
-  margin-left: 220px;
-  padding: 25px;
-}
-
-/* =========================
-   CARDS
-========================= */
-.card {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  margin-top: 15px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-
-/* =========================
-   TABLES
-========================= */
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-}
-
-.table th {
-  text-align: left;
-  background: #f8fafc;
-  padding: 12px;
-  border-bottom: 1px solid #e2e8f0;
-  font-weight: 600;
-}
-
-.table td {
-  padding: 12px;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-/* =========================
-   BADGES (ROLES)
-========================= */
-.badge {
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.admin {
-  background: #fee2e2;
-  color: #b91c1c;
-}
-
-.agent {
-  background: #dbeafe;
-  color: #1d4ed8;
-}
-
-/* =========================
-   DASHBOARD STATS
-========================= */
-.stat-grid {
+.login-body {
   display: flex;
-  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-.stat-card {
-  flex: 1;
-  background: white;
-  padding: 20px;
+.login-container {
+  background: #1e293b;
+  padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  width: 300px;
 }
 
-.stat-card h3 {
-  margin: 0;
-  font-size: 18px;
-}
-
-.stat-card p {
-  font-size: 22px;
-  font-weight: bold;
-  margin-top: 10px;
-}
-
-/* =========================
-   CASE CARDS
-========================= */
-.case-card {
-  background: white;
-  padding: 15px;
-  border-radius: 8px;
-  margin-top: 10px;
-  border-left: 5px solid #2563eb;
-}
-
-/* =========================
-   PROFILE PAGE
-========================= */
-.profile-box {
-  max-width: 600px;
-}
-
-.profile-box h2 {
-  margin-bottom: 10px;
-}
-
-.warning {
-  color: #b91c1c;
-  font-weight: bold;
+.error {
+  color: red;
 }
