@@ -1,32 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="style.css">
+  <title>Users</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
-<body onload="checkAuth(); loadCases()">
+<body onload="checkAuth(); loadUsers(); loadRoles()">
 
 <div class="sidebar">
-<a href="dashboard.html">📊 Dashboard</a>
-<a href="users.html">👤 Users</a>
-<a href="cases.html">📁 Cases</a>
-<a onclick="logout()">🚪 Logout</a>
+  <h2>DHS | OIG</h2>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="users.html">Users</a>
+  <a href="cases.html">Cases</a>
+  <a href="#" onclick="logout()">Logout</a>
 </div>
 
 <div class="main">
 
-<div class="topbar">Case Management</div>
+<h1>User Management</h1>
 
 <div class="card">
-<h3>Create Case</h3>
-
-<input id="caseTitle" placeholder="Case Title">
-<textarea id="caseDesc" placeholder="Description"></textarea>
-
-<button onclick="createCase()">Create Case</button>
+  <h3>Create User</h3>
+  <input id="newUser" placeholder="Username">
+  <input id="newPass" placeholder="Password">
+  <select id="role"></select>
+  <button onclick="createUser()">Create</button>
 </div>
 
-<div id="caseList"></div>
+<div class="card">
+  <h3>Create Role</h3>
+  <input id="roleName" placeholder="Role Name">
+
+  <label><input type="checkbox" class="perm" value="manage_users"> Manage Users</label>
+  <label><input type="checkbox" class="perm" value="manage_cases"> Manage Cases</label>
+
+  <button onclick="createRole()">Create Role</button>
+
+  <div id="roleList"></div>
+</div>
+
+<div class="card">
+  <h3>Users</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Role</th>
+        <th>Warnings</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="userList"></tbody>
+  </table>
+</div>
 
 </div>
 
