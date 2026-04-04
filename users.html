@@ -1,54 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="style.css">
+  <title>Users</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
-<body onload="checkAuth('admin'); loadUsers()">
+<body onload="checkAuth(); loadUsers(); loadRoles()">
 
 <div class="sidebar">
-  <a href="dashboard.html">📊 Dashboard</a>
-  <a href="users.html">👤 Users</a>
-  <a href="cases.html">📁 Cases</a>
-  <a onclick="logout()">🚪 Logout</a>
+  <h2>DHS | OIG</h2>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="users.html">Users</a>
+  <a href="cases.html">Cases</a>
+  <a href="#" onclick="logout()">Logout</a>
 </div>
 
 <div class="main">
 
-<div class="topbar">User Management</div>
+<h1>User Management</h1>
 
 <div class="card">
-<h3>Create User</h3>
-
-<input id="newUser" placeholder="Username">
-<input id="newPass" placeholder="Password">
-
-<select id="role">
-<option value="agent">Agent</option>
-<option value="admin">Admin</option>
-</select>
-
-<button onclick="createUser()">Create</button>
+  <h3>Create User</h3>
+  <input id="newUser" placeholder="Username">
+  <input id="newPass" placeholder="Password">
+  <select id="role"></select>
+  <button onclick="createUser()">Create</button>
 </div>
 
 <div class="card">
-<h3>All Users</h3>
+  <h3>Create Role</h3>
+  <input id="roleName" placeholder="Role Name">
 
-<input id="searchUser" placeholder="Search..." onkeyup="loadUsers()">
+  <label><input type="checkbox" class="perm" value="manage_users"> Manage Users</label>
+  <label><input type="checkbox" class="perm" value="manage_cases"> Manage Cases</label>
 
-<table class="table">
-<thead>
-<tr>
-<th>User</th>
-<th>Role</th>
-<th>Warnings</th>
-<th>Actions</th>
-</tr>
-</thead>
+  <button onclick="createRole()">Create Role</button>
 
-<tbody id="userList"></tbody>
+  <div id="roleList"></div>
+</div>
 
-</table>
+<div class="card">
+  <h3>Users</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Role</th>
+        <th>Warnings</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="userList"></tbody>
+  </table>
 </div>
 
 </div>
