@@ -1,262 +1,177 @@
-/* =========================
-   DEFAULT USER SETUP
-========================= */
-(function initDefaultUsers() {
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-
-  if (!users.some(u => u.username === "IG01")) {
-    users.push({
-      username: "IG01",
-      password: "alphacharliezulu",
-      role: "admin",
-      notes: "",
-      warnings: 0
-    });
-
-    localStorage.setItem("users", JSON.stringify(users));
-  }
-})();
-
-/* =========================
-   AUTH SYSTEM
-========================= */
-
+/* LOGIN */
 function login() {
-  const u = document.getElementById("username").value;
-  const p = document.getElementById("password").value;
+  const u = username.value;
+  const p = password.value;
 
   let users = JSON.parse(localStorage.getItem("users")) || [];
 
-  const user = users.find(x => x.username === u && x.password === p);
+  let user = users.find(x => x.username === u && x.password === p);
 
-  if (!user) {
-    document.getElementById("error").innerText = "Invalid login";
-    return;
-  }
+  if (!user) return error.innerText = "Invalid login";
 
   localStorage.setItem("user", JSON.stringify(user));
-  window.location = "dashboard.html";
+  location = "dashboard.html";
+}
+
+function checkAuth() {
+  if (!localStorage.getItem("user")) location = "index.html";
 }
 
 function logout() {
-  localStorage.removeItem("user");
-  window.location = "index.html";
+  localStorage.clear();
+  location = "index.html";
 }
 
-function checkAuth(role = null) {
-  const user = JSON.parse(localStorage.getItem("user"));
+/* DASHBOARD */
+function loadDashboard() {
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  let cases = JSON.parse(localStorage.getItem("cases")) || [];
 
-  if (!user) {
-    window.location = "index.html";
-    return;
-  }
+  userCount.innerText = users.length;
+  caseCount.innerText = cases.length;
+  activeCases.innerText = cases.filter(c => c.status !== "Closed").length;
 
-  if (role && user.role !== role) {
-    alert("Access denied");
-    window.location = "dashboard.html";
-  }
+  let ann = JSON.parse(localStorage.getItem("announcements")) || [];
+
+  announcements.innerHTML = ann.map(a =>
+    `<p>${a.date} - ${a.text}</p>`
+  ).join("");
 }
 
-/* =========================
-   ROLES SYSTEM
-========================= */
+function addAnnouncement() {
+  let ann = JSON.parse(localStorage.getItem("announcements")) || [];
 
+  ann.unshift({
+    text: announcementText.value,
+    date: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("announcements", JSON.stringify(ann));
+  loadDashboard();
+}
+
+/* USERS */
+function createUser() {
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  users.push({
+    username: newUser.value,
+    password: newPass.value,
+    role: role.value,
+    warnings: []
+  });
+
+  localStorage.setItem("users", JSON.stringify(users));
+  loadUsers();
+}
+
+function loadUsers() {
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  userList.innerHTML = users.map((u,i)=>`
+    <tr>
+      <td>${u.username}</td>
+      <td>${u.role}</td>
+      <td>${u.warnings.length}</td>
+      <td>
+        <button onclick="addWarning(${i})">Warn</button>
+        <button onclick="deleteUser(${i})">Delete</button>
+      </td>
+    </tr>
+  `).join("");
+}
+
+function deleteUser(i) {
+  let users = JSON.parse(localStorage.getItem("users"));
+  users.splice(i,1);
+  localStorage.setItem("users",JSON.stringify(users));
+  loadUsers();
+}
+
+function addWarning(i) {
+  let users = JSON.parse(localStorage.getItem("users"));
+  users[i].warnings.push({text:"Warning",date:new Date()});
+  localStorage.setItem("users",JSON.stringify(users));
+}
+
+/* ROLES */
 function createRole() {
   let roles = JSON.parse(localStorage.getItem("roles")) || [];
 
-  const name = document.getElementById("roleName").value;
-
-  // get selected permissions
-  const permissions = Array.from(
-    document.querySelectorAll(".perm:checked")
-  ).map(p => p.value);
-
-  if (!name) {
-    alert("Role name required");
-    return;
-  }
-
-  roles.push({ name, permissions });
+  roles.push({
+    name: roleName.value
+  });
 
   localStorage.setItem("roles", JSON.stringify(roles));
-
   loadRoles();
 }
 
 function loadRoles() {
   let roles = JSON.parse(localStorage.getItem("roles")) || [];
-  const list = document.getElementById("roleList");
 
-  if (!list) return;
+  role.innerHTML = roles.map(r =>
+    `<option>${r.name}</option>`
+  ).join("");
 
-  list.innerHTML = "";
-
-  roles.forEach((r, i) => {
-    list.innerHTML += `
-      <div class="card">
-        <b>${r.name}</b>
-        <p>${r.permissions.join(", ")}</p>
-        <button onclick="deleteRole(${i})">Delete</button>
-      </div>
-    `;
-  });
+  roleList.innerHTML = roles.map(r =>
+    `<p>${r.name}</p>`
+  ).join("");
 }
 
-function deleteRole(i) {
-  let roles = JSON.parse(localStorage.getItem("roles")) || [];
-  roles.splice(i, 1);
-  localStorage.setItem("roles", JSON.stringify(roles));
-  loadRoles();
-}
-
-/* =========================
-   USERS SYSTEM
-========================= */
-
-function createUser() {
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-
-  const username = document.getElementById("newUser").value;
-  const password = document.getElementById("newPass").value;
-  const role = document.getElementById("role").value;
-
-  if (!username || !password) {
-    alert("Fill all fields");
-    return;
-  }
-
-  users.push({
-    username,
-    password,
-    role,
-    warnings: [],
-    notes: ""
-  });
-
-  localStorage.setItem("users", JSON.stringify(users));
-
-  loadUsers();
-}
-
-function loadUsers() {
-  const list = document.getElementById("userList");
-  if (!list) return;
-
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-
-  list.innerHTML = "";
-
-  users.forEach((u, i) => {
-    list.innerHTML += `
-      <div class="card">
-        <b>${u.username}</b> (${u.role})
-
-        <br><br>
-
-        <input id="editUser${i}" value="${u.username}">
-        <input id="editPass${i}" value="${u.password}">
-
-        <select id="editRole${i}">
-          ${getRoleOptions(u.role)}
-        </select>
-
-        <button onclick="updateUser(${i})">Update</button>
-        <button onclick="deleteUser(${i})">Delete</button>
-      </div>
-    `;
-  });
-}
-
-function getRoleOptions(current) {
-  let roles = JSON.parse(localStorage.getItem("roles")) || [];
-
-  let options = "";
-
-  roles.forEach(r => {
-    options += `<option value="${r.name}" ${r.name === current ? "selected" : ""}>${r.name}</option>`;
-  });
-
-  return options;
-}
-
-function updateUser(i) {
-  let users = JSON.parse(localStorage.getItem("users"));
-
-  users[i].username = document.getElementById(`editUser${i}`).value;
-  users[i].password = document.getElementById(`editPass${i}`).value;
-  users[i].role = document.getElementById(`editRole${i}`).value;
-
-  localStorage.setItem("users", JSON.stringify(users));
-  loadUsers();
-}
-
-function deleteUser(i) {
-  let users = JSON.parse(localStorage.getItem("users"));
-
-  users.splice(i, 1);
-
-  localStorage.setItem("users", JSON.stringify(users));
-  loadUsers();
-}
-
-/* =========================
-   CASES SYSTEM
-========================= */
-
-function assignUserToCase(caseId, username) {
+/* CASES */
+function createCase() {
   let cases = JSON.parse(localStorage.getItem("cases")) || [];
 
-  let c = cases.find(x => x.id == caseId);
-
-  if (!c.assignedUsers) c.assignedUsers = [];
-
-  if (!c.assignedUsers.includes(username)) {
-    c.assignedUsers.push(username);
-  }
+  cases.push({
+    id: Date.now(),
+    title: caseTitle.value,
+    desc: caseDesc.value,
+    status: "Open",
+    assignedUsers: []
+  });
 
   localStorage.setItem("cases", JSON.stringify(cases));
+  loadCases();
 }
 
-function removeUserFromCase(caseId, username) {
+function loadCases() {
   let cases = JSON.parse(localStorage.getItem("cases")) || [];
 
-  let c = cases.find(x => x.id == caseId);
+  caseList.innerHTML = cases.map(c=>`
+    <div class="card">
+      <h3>${c.title}</h3>
+      <p>${c.status}</p>
+      <button onclick="openCase(${c.id})">Open</button>
+    </div>
+  `).join("");
+}
 
-  c.assignedUsers = c.assignedUsers.filter(u => u !== username);
+function openCase(id) {
+  localStorage.setItem("caseId", id);
+  location = "case.html";
+}
+
+function loadCase() {
+  let cases = JSON.parse(localStorage.getItem("cases")) || [];
+  let id = localStorage.getItem("caseId");
+
+  let c = cases.find(x=>x.id==id);
+
+  case.innerHTML = `
+    <input id="title" value="${c.title}">
+    <textarea id="desc">${c.desc}</textarea>
+
+    <button onclick="saveCase(${id})">Save</button>
+  `;
+}
+
+function saveCase(id) {
+  let cases = JSON.parse(localStorage.getItem("cases"));
+
+  let c = cases.find(x=>x.id==id);
+
+  c.title = title.value;
+  c.desc = desc.value;
 
   localStorage.setItem("cases", JSON.stringify(cases));
-}
-
-/* =========================
-   WARNINGS
-========================= */
-
-function addWarning(i) {
-  let users = JSON.parse(localStorage.getItem("users"));
-
-  const text = prompt("Enter warning:");
-
-  users[i].warnings.push({
-    text,
-    date: new Date().toLocaleString()
-  });
-
-  localStorage.setItem("users", JSON.stringify(users));
-}
-
-/* =========================
-   ANNOUNCEMENTS
-========================= */
-
-function addAnnouncement() {
-  let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
-
-  const text = document.getElementById("announcementText").value;
-
-  announcements.unshift({
-    text,
-    date: new Date().toLocaleString()
-  });
-
-  localStorage.setItem("announcements", JSON.stringify(announcements));
 }
